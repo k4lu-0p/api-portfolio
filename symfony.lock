@@ -93,8 +93,17 @@
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
+    "illuminate/contracts": {
+        "version": "v5.8.36"
+    },
+    "illuminate/support": {
+        "version": "v5.8.36"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "nesbot/carbon": {
+        "version": "2.29.1"
     },
     "nikic/php-parser": {
         "version": "v4.3.0"
@@ -116,6 +125,9 @@
     },
     "psr/log": {
         "version": "1.1.2"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "symfony/apache-pack": {
         "version": "1.0",
@@ -295,6 +307,19 @@
     },
     "symfony/stopwatch": {
         "version": "v4.4.3"
+    },
+    "symfony/translation": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
     },
     "symfony/translation-contracts": {
         "version": "v1.1.7"

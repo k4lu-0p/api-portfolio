@@ -5,6 +5,7 @@ namespace App\Services;
 class SlugHelper {
 
     /**
+     * @deprecated - Remplacer par utilisation des helpers de illuminate Str::slug
      * @author Lucas Robin
      * Permet de slugify une chaîne de caractère.
      * @param string $string Chaîne à transformer.

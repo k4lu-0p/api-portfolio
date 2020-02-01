@@ -19,13 +19,13 @@ class Customer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $name;
 
@@ -37,42 +37,43 @@ class Customer
      * )
      * @Assert\NotBlank(message="Veuillez insérer le logo de l'entreprise correspondant au client.")
      * @ORM\Column(type="string", length=255)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $logo;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $link;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="customer")
+     * @Groups({"get:customer"})
      */
     private $projects;
 

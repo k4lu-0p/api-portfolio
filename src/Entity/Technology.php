@@ -17,42 +17,43 @@ class Technology
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("get:project")
+     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $updated_at;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="technologies")
+     * @Groups({"get:technology"})
      */
     private $projects;
 
