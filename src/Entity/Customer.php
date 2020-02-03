@@ -26,15 +26,11 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotBlank(message="Veuillez définir un nom pour votre client.")
      */
     private $name;
 
     /**
-     * @Assert\File(
-     *      maxSize = "10240k",
-     *      mimeTypes={ "image/jpeg", "image/png", "image/jpg"},
-     *      mimeTypesMessage = "Le type de fichier n'est pas valide..."
-     * )
      * @Assert\NotBlank(message="Veuillez insérer le logo de l'entreprise correspondant au client.")
      * @ORM\Column(type="string", length=255)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
@@ -44,30 +40,35 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotBlank(message="Veuillez fournir une description de votre client.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $link;
 

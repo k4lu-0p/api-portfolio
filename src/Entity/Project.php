@@ -53,11 +53,6 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\File(
-     *      maxSize = "10240k",
-     *      mimeTypes={ "image/jpeg", "image/png", "image/jpg"},
-     *      mimeTypesMessage = "Le type de fichier n'est pas valide..."
-     * )
      * @Assert\NotBlank(message="Veuillez insérer une image pour le projet.")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */

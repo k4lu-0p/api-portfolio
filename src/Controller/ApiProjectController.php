@@ -110,7 +110,7 @@ class ApiProjectController extends AbstractController
                 ->setTitle($json->title ? $json->title : $project->title)
                 ->setLink($json->link ? $json->link : $project->link)
                 ->setSlug($json->title ? Str::slug($json->title) : $project->slug)
-                ->setThumbnail($json->thumbnail ? $json->thumbnail : $project->link)
+                ->setThumbnail($json->thumbnail ? $json->thumbnail : $project->thumbnail)
                 ->setDescription($json->description ? $json->description : $project->description);
 
             $this->manager->persist($project);
