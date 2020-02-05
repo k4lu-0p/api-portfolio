@@ -13,8 +13,8 @@ class UploadService {
      * @param string $file_ext - Extension du fichier uploadé.
      */
     public static function handle($file_base64,  $file_name,  $folder,  $file_ext) {
-        $tmpPath = sys_get_temp_dir() . '/' . $file_name . uniqid() . "." . $file_ext; // Chemin temporaire.
         $decodedFile = base64_decode($file_base64); // Decode le fichier.
+        $tmpPath = sys_get_temp_dir() . '/' . $file_name . uniqid() . "." . $file_ext; // Chemin temporaire.
         file_put_contents($tmpPath, $decodedFile); // Créer le fichier temporaire.
         $uploadedFile = new File($tmpPath);
         $uploadedFile->move($folder, $tmpPath);

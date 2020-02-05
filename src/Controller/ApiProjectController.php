@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Services\UploadService;
 use Doctrine\DBAL\DBALException;
 use Illuminate\Support\Str;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,19 +13,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiProjectController extends AbstractController
 {
     private $projectRepository;
     private $manager;
+    private $validator;
 
     public function __construct(
         ProjectRepository $projectRepository,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        ValidatorInterface $validator
     )
     {
         $this->projectRepository = $projectRepository;
         $this->manager = $manager;
+        $this->validator = $validator;
     }
 
     /**
@@ -51,21 +56,36 @@ class ApiProjectController extends AbstractController
         try {
             $project = $serializer->deserialize($json, Project::class, 'json');
     
-            // Set Timestamp (TODO: Config this in SQL|Database|Entities)
+            // Propriétés ajoutées automatiquements.
             $project->setCreatedAt(new \DateTime())
                     ->setUpdatedAt(new \DateTime())
                     ->setSlug(Str::slug($project->getTitle(), '-'));
 
-            $this->manager->persist($project);
-            $this->manager->flush();   
-
-            return $this->json($project, 201, [], ['groups' => 'get:project']);
+            // Decode, create, move et retourne le nom du fichier créé.
+            $thumbnail_decoded = UploadService::handle( // Voir dans Services
+                $project->getThumbnail(),
+                $project->getSlug(),
+                $this->getParameter('uploads_directory'),
+                "jpg"
+            );
+            
+            $project->setThumbnail("uploads/{$thumbnail_decoded}"); // Ajout du chemin definitif de l'image uploadé.
 
         } catch(NotEncodableValueException $error) {
             return $this->json([
                 'status' => 400,
                 'message' => $error->getMessage()
             ]);
+        }
+
+        // Validation avant enregistrement et renvoi.
+        $violations = $this->validator->validate($project);
+        if($violations->count() > 0) {
+            return $this->json($violations, 400);
+        } else {
+            $this->manager->persist($project);
+            $this->manager->flush(); 
+            return $this->json($project, 201, [], ['groups' => 'get:customer']); 
         }
     }
 

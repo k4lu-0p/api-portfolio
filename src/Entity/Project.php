@@ -24,36 +24,41 @@ class Project
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
+     * @Assert\NotNull
      */
     private $link;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Veuillez insérer une image pour le projet.")
+     * @Assert\NotNull
      * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $thumbnail;

@@ -62,21 +62,15 @@ class ApiCustomerController extends AbstractController
                 ->setUpdatedAt(new \DateTime())
                 ->setSlug(Str::slug($customer->getName(), '-'));
 
-                // TODO: Refactoring this parts...
-                $logo_encoded = $customer->getLogo();
-                $slug = $customer->getSlug();
-                $folder = $this->getParameter('uploads_directory'); // Voir dans services.yaml
-                $ext = "jpg";
-
-                // Decode, create & move...
+                // Decode, create, move et retourne le nom du fichier créé.
                 $logo_decoded = UploadService::handle( // Voir dans Services
-                    $logo_encoded,
-                    $slug,
-                    $folder,
-                    $ext
+                    $customer->getLogo(),
+                    $customer->getSlug(),
+                    $this->getParameter('uploads_directory'),
+                    "jpg"
                 );
 
-                $customer->setLogo($logo_decoded); // Ajout du chemin definitif de l'image uploadé.
+                $customer->setLogo("uploads/{$logo_decoded}"); // Ajout du chemin definitif de l'image uploadé.
 
             } catch(NotEncodableValueException $error) {
                 return $this->json([
