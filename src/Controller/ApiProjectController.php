@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Repository\CategoryRepository;
+use App\Repository\CustomerRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\TechnologyRepository;
 use App\Services\UploadService;
 use Doctrine\DBAL\DBALException;
 use Illuminate\Support\Str;
@@ -17,17 +20,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiProjectController extends AbstractController
 {
+    private $customerRepository;
     private $projectRepository;
+    private $categoryRepository;
+    private $technologyRepository;
     private $manager;
     private $validator;
 
     public function __construct(
         ProjectRepository $projectRepository,
+        CustomerRepository $customerRepository,
+        CategoryRepository $categoryRepository,
+        TechnologyRepository $technologyRepository,
         EntityManagerInterface $manager,
         ValidatorInterface $validator
     )
     {
+        $this->customerRepository = $customerRepository;
         $this->projectRepository = $projectRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->technologyRepository = $technologyRepository; 
         $this->manager = $manager;
         $this->validator = $validator;
     }
@@ -38,6 +50,7 @@ class ApiProjectController extends AbstractController
      */
     public function index($id = null)
     {
+        // dd($this->manager->getRepository(\App\Entity\AuthToken::class)->find(1)->getUser());
 
         if ($id) {
             return $this->json($this->projectRepository->find($id), 200, [], ['groups' => 'get:project']);
@@ -55,12 +68,11 @@ class ApiProjectController extends AbstractController
 
         try {
             $project = $serializer->deserialize($json, Project::class, 'json');
-    
+            
             // Propriétés ajoutées automatiquements.
             $project->setCreatedAt(new \DateTime())
                     ->setUpdatedAt(new \DateTime())
                     ->setSlug(Str::slug($project->getTitle(), '-'));
-
             // Decode, create, move et retourne le nom du fichier créé.
             $thumbnail_decoded = UploadService::handle( // Voir dans Services
                 $project->getThumbnail(),
@@ -113,7 +125,6 @@ class ApiProjectController extends AbstractController
                 'code' => $error->getPrevious()->getCode()
             ]);
         }
-
     }
 
     /**
@@ -124,14 +135,36 @@ class ApiProjectController extends AbstractController
 
         $json = json_decode($request->getContent()); 
         $project = $this->projectRepository->find($json->id);
+
+        // relation customer si customer envoyé
+        if(isset($json->customer_id)) {
+            $customer = $this->customerRepository->find($json->customer_id);
+            $project->setCustomer($customer);
+        }
+
+        // relation technology si une ou plusieurs technologies envoyé
+        if(isset($json->technologies_id)) {
+            foreach ($json->technologies_id as $technology_id) {
+                $technology = $this->technologyRepository->find($technology_id);
+                $project->addTechnology($technology);
+            }
+        }
+
+        // relation category si une ou plusieurs categories envoyé
+        if(isset($json->categories_id)) {
+            foreach ($json->categories_id as $category_id) {
+                $category = $this->categoryRepository->find($category_id);
+                $project->addCategory($category);
+            }
+        }
         
         try {
             $project->setUpdatedAt(new \DateTime())
-                ->setTitle($json->title ? $json->title : $project->title)
-                ->setLink($json->link ? $json->link : $project->link)
-                ->setSlug($json->title ? Str::slug($json->title) : $project->slug)
-                ->setThumbnail($json->thumbnail ? $json->thumbnail : $project->thumbnail)
-                ->setDescription($json->description ? $json->description : $project->description);
+                ->setTitle(isset($json->title) ? $json->title : $project->getTitle())
+                ->setLink(isset($json->link) ? $json->link : $project->getLink())
+                ->setSlug(isset($json->title) ? Str::slug($json->title) : $project->getSlug())
+                ->setThumbnail(isset($json->thumbnail) ? $json->thumbnail : $project->getThumbnail())
+                ->setDescription(isset($json->description) ? $json->description : $project->getDescription());
 
             $this->manager->persist($project);
             $this->manager->flush();
@@ -147,3 +180,4 @@ class ApiProjectController extends AbstractController
         }
     }
 }
+

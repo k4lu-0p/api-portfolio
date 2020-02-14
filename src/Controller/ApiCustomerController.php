@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Repository\CustomerRepository;
+use App\Repository\ProjectRepository;
 use App\Services\UploadService;
 
 use Doctrine\DBAL\DBALException;
@@ -19,15 +20,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ApiCustomerController extends AbstractController
 {
     private $customerRepository;
+    private $projectRepository;
     private $manager;
     private $validator;
 
     public function __construct(
+        ProjectRepository $projectRepository,
         CustomerRepository $customerRepository,
         EntityManagerInterface $manager,
         ValidatorInterface $validator
     )
     {
+        $this->projectRepository = $projectRepository;
         $this->customerRepository = $customerRepository;
         $this->manager = $manager;
         $this->validator = $validator;
@@ -126,12 +130,20 @@ class ApiCustomerController extends AbstractController
         $json = json_decode($request->getContent()); 
         $customer = $this->customerRepository->find($json->id);
 
+        // relation project si un ou plusieurs projects envoyé
+        if(isset($json->projects_id)) {
+            foreach ($json->projects_id as $project_id) {
+                $project = $this->projectRepository->find($project_id);
+                $customer->addProject($project);
+            }
+        }
+
         try {
             $customer->setUpdatedAt(new \DateTime())
-                ->setName($json->name ? $json->name : $customer->name)
-                ->setSlug($json->name ? Str::slug($json->name) : $customer->slug)
-                ->setLink($json->link ? $json->link : $customer->slug)
-                ->setDescription($json->description ? $json->description : $customer->description);
+                ->setName(isset($json->name) ? $json->name : $customer->getName())
+                ->setSlug(isset($json->name) ? Str::slug($json->name) : $customer->getSlug())
+                ->setLink(isset($json->link) ? $json->link : $customer->getLink())
+                ->setDescription(isset($json->description) ? $json->description : $customer->getDescription());
 
             $this->manager->persist($customer);
             $this->manager->flush();

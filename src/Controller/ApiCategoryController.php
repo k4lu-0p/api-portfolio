@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Repository\ProjectRepository;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,16 +17,18 @@ use Illuminate\Support\Str;
 
 class ApiCategoryController extends AbstractController
 {
-
+    private $projectRepository;
     private $categoryRepository;
     private $manager;
 
     public function __construct(
+        ProjectRepository $projectRepository,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $manager
     )
     {
         $this->categoryRepository = $categoryRepository;
+        $this->projectRepository = $projectRepository;
         $this->manager = $manager;
     }
 
@@ -105,11 +108,19 @@ class ApiCategoryController extends AbstractController
 
         $json = json_decode($request->getContent()); 
         $category = $this->categoryRepository->find($json->id);
+
+        // relation project si un ou plusieurs projects envoyé
+        if(isset($json->projects_id)) {
+            foreach ($json->projects_id as $project_id) {
+                $project = $this->projectRepository->find($project_id);
+                $category->addProject($project);
+            }
+        }
         
         try {
             $category->setUpdatedAt(new \DateTime())
-                ->setLabel($json->label ? $json->label : $category->label)
-                ->setSlug($json->label ? Str::slug($json->label) : $category->slug);
+                ->setLabel(isset($json->label) ? $json->label : $category->getLabel())
+                ->setSlug(isset($json->label) ? Str::slug($json->label) : $category->getSlug());
 
             $this->manager->persist($category);
             $this->manager->flush();

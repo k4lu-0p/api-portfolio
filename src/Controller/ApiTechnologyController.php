@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Technology;
+use App\Repository\ProjectRepository;
 use App\Repository\TechnologyRepository;
 use Doctrine\DBAL\DBALException;
 use Illuminate\Support\Str;
@@ -14,14 +15,17 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 class ApiTechnologyController extends AbstractController
 {
+    private $projectRepository;
     private $technologyRepository;
     private $manager;
 
     public function __construct(
+        ProjectRepository $projectRepository,
         TechnologyRepository $technologyRepository,
         EntityManagerInterface $manager
     )
     {
+        $this->projectRepository = $projectRepository;
         $this->technologyRepository = $technologyRepository;
         $this->manager = $manager;
     }
@@ -102,11 +106,19 @@ class ApiTechnologyController extends AbstractController
         $json = json_decode($request->getContent()); 
         $technology = $this->technologyRepository->find($json->id);
 
+        // relation project si un ou plusieurs projects envoyé
+        if(isset($json->projects_id)) {
+            foreach ($json->projects_id as $project_id) {
+                $project = $this->projectRepository->find($project_id);
+                $technology->addProject($project);
+            }
+        }
+
         try {
             $technology->setUpdatedAt(new \DateTime())
-                ->setName($json->name ? $json->name : $technology->name)
-                ->setSlug($json->name ? Str::slug($json->name) : $technology->slug)
-                ->setDescription($json->description ? $json->description : $technology->description);
+            ->setName(isset($json->name) ? $json->name : $technology->getName())
+            ->setSlug(isset($json->name) ? Str::slug($json->name) : $technology->getSlug())
+                ->setDescription(isset($json->description) ? $json->description : $technology->getDescription());
 
             $this->manager->persist($technology);
             $this->manager->flush();
