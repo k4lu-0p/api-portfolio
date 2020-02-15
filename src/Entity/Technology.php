@@ -21,26 +21,31 @@ class Technology
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Veuillez définir un nom pour votre technologie.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Veuillez définir une description pour votre technologie.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Veuillez définir un slug pour votre technologie.")
      */
     private $slug;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("\DateTime")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("\DateTime")
      */
     private $updated_at;
 

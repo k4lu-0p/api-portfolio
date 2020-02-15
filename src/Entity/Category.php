@@ -21,13 +21,13 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=50)
-     * 
+     * @Assert\NotBlank(message="Veuillez définir le label de votre catégorie.")
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * 
+     * @Assert\NotBlank(message="Veuillez définir un slug pour votre catégorie.")
      */
     private $slug;
 
@@ -38,12 +38,13 @@ class Category
 
     /**
      * @ORM\Column(type="datetime")
-     * 
+     * @Assert\Type("\DateTime")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("\DateTime")
      */
     private $updated_at;
 

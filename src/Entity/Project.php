@@ -21,42 +21,44 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Veuillez définir un titre pour votre projet.")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Veuillez définir une description pour votre projet.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull
+     * @Assert\Type("\DateTime")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull
+     * @Assert\Type("\DateTime")
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Veuillez définir l'URL d'accès à votre projet.")
+     * @Assert\Url(message = "'{{ value }}' n'est pas une URL valide.", protocols = {"http", "https"})
      */
     private $link;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Veuillez fournir une vignette pour votre projet.")
      */
     private $thumbnail;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Veuillez définir un slug pour votre projet.")
      */
     private $slug;
 

@@ -33,7 +33,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Veuillez définir un slug pour votre client.")
      */
     private $slug;
 
@@ -45,19 +45,19 @@ class Customer
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull
+     * @Assert\Type("\DateTime")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull
+     * @Assert\Type("\DateTime")
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotNull
+     * @Assert\Url(message = "'{{ value }}' n'est pas une URL valide.", protocols = {"http", "https"})
      */
     private $link;
 
