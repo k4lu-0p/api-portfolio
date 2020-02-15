@@ -1,0 +1,26 @@
+App\Entity\Project:
+  attributes:
+    id: 
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    title:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    description:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    created_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    updated_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    link:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    thumbnail:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    slug:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    technologies:
+      groups: ['get:project', 'get:category', 'get:customer']
+    customer:
+      groups: ['get:project', 'get:category', 'get:technology']
+    categories:
+      groups: ['get:project', 'get:technology', 'get:customer']
+
+

@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
@@ -17,41 +16,35 @@ class Project
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $link;
@@ -59,31 +52,26 @@ class Project
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $thumbnail;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Technology", inversedBy="projects")
-     * @Groups({"get:project", "get:category", "get:customer"})
      */
     private $technologies;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="projects")
-     * @Groups({"get:project", "get:category", "get:technology"})
      */
     private $customer;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="projects")
-     * @Groups({"get:project", "get:technology", "get:customer"})
      */
     private $categories;
 

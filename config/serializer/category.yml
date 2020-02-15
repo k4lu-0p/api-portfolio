@@ -1,0 +1,14 @@
+App\Entity\Category:
+  attributes:
+    id:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    label:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    slug:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    projects:
+      groups: ['get:category']
+    created_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    updated_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']

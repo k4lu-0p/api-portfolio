@@ -6,9 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
-
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
@@ -19,13 +16,11 @@ class Customer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotBlank(message="Veuillez définir un nom pour votre client.")
      */
     private $name;
@@ -33,48 +28,41 @@ class Customer
     /**
      * @Assert\NotBlank(message="Veuillez insérer le logo de l'entreprise correspondant au client.")
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      */
     private $logo;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotBlank(message="Veuillez fournir une description de votre client.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * @Assert\NotNull
      */
     private $link;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="customer")
-     * @Groups({"get:customer"})
      */
     private $projects;
 

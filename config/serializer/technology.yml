@@ -1,0 +1,16 @@
+App\Entity\Technology:
+  attributes:
+    id:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    name:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    description:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    slug:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    created_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    updated_at:
+      groups: ['get:project', 'get:category', 'get:technology', 'get:customer']
+    projects:
+      groups: ['get:technology']

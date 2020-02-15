@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -16,41 +15,35 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * 
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get:project", "get:category", "get:technology", "get:customer"})
      * 
      */
     private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", inversedBy="categories")
-     * @Groups({"get:category"})
      */
     private $projects;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:technology", "get:customer"})
      * 
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get:project", "get:technology", "get:customer"})
      */
     private $updated_at;
 
